@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-样式绑定</title>
+  <style type="text/css">
+    .active {
+      border: 1px solid red;
+      width: 100px;
+      height: 100px;
+    }
+
+    .active1 {
+      border: 1px solid blue;
+      width: 50px;
+      height: 50px;
+    }
+
+    .error {
+      background-color: orange;
+    }
+  </style>
+</head>
+<body>
+<div id='my-vue'>
+  <div class="active"/>
+  <!--v-bind:class绑定样式，{active:isActive}为对象形式-->
+  <div v-bind:class="{active1:isActive,error:isError}"/>
+  <input type="button" value="切换" @click="changestyle">
+  <input type="button" value="error" @click="changeerror">
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      isActive: true,
+      isError: false
+    },
+    methods: {
+      changestyle: function () {
+        this.isActive = !this.isActive
+      },
+      changeerror: function () {
+        this.isError = !this.isError
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
