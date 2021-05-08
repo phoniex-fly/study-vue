@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-双向数据绑定</title>
+  <!--html5的响应式：屏幕尺寸变化引起页面样式变化
+  数据响应式：数据变化引起页面内容的变化，v-text等默认是相应式-->
+</head>
+<body>
+<div id='my-vue' v-cloak>
+  <div>{{message}}</div>
+  <input type="text" v-model="message">
+  <!--v-model完成双向数据绑定-->
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      message: 'hello vue',
+    }
+  });
+</script>
+
+</body>
+</html>

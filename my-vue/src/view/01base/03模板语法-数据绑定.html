@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-(v-text/v-html/v-pre)</title>
+</head>
+<body>
+<div id='my-vue' v-cloak>
+  <div>{{message}}</div>
+  <!--填充纯文本-->
+  <div v-text="message"></div>
+  <div v-text="message+'===='+'拼接'"></div>
+  <!--填充样式：存在安全问题，容易引起跨站脚本攻击，
+  使用原则：通过ajax请求本网站认为是安全的，请求第三方网站，认为不安全-->
+  <div v-html="msg"></div>
+  <!--显示原始信息，跳过编译过程-->
+  <div v-pre>{{message}}</div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      message: 'hello vue',
+      msg: `<h1>html</h1>`
+    }
+  });
+</script>
+
+</body>
+</html>

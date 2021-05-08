@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-属性绑定</title>
+</head>
+<body>
+<div id='my-vue'>
+  v-bind用于绑定属性
+  <br/>
+  <a href="http://www.baidu.com" name="www">百度</a>
+  <a v-bind:href="url">{{name}}</a>
+  <input type="button" @click="changeUrl" value="切换">
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      url: 'http://www.baidu.com',
+      name: '百度'
+    },
+    methods: {
+      changeUrl: function () {
+        this.url = 'https://github.com/'
+        this.name = 'github'
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue基本使用</title>
+</head>
+<body>
+<div id='my-vue'>
+  {{message}}<!--差值表达式-->
+  {{message+'========'+123}}<!--差值表达式；支持字符串拼接-->
+  {{1+2}}<!--差值表达式：支持计算-->
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  /**
+   * vue的基本使用步骤
+   * 1、需要提供标签用于填充数据
+   * 2、引入vue.js库文件
+   * 3、使用vue语法实现功能
+   * 4、将vue提供的数据填充到标签里
+   */
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      message: 'hello vue'
+    }
+  });
+</script>
+
+</body>
+</html>

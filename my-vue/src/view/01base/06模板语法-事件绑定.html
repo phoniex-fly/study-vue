@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-事件绑定</title>
+</head>
+<body>
+<div id='my-vue'>
+
+  ----------------------------事件绑定---------------------
+  <div>{{num}}</div>
+  <input type="button" v-on:click="add()" value="点击"/>
+  <input type="button" @click="add()" value="点击"/>
+  <input type="button" @click="add" value="点击"/><!--默认传递事件对象-->
+  <br/>
+  ----------------------------事件传参：若传递事件对象，则事件对象参数必须写在最后一个参数---------------------
+  <div>{{message}}</div>
+  <div>获取事件标签名称：{{type}}</div>
+  <div>获取事件标签内容：{{innerHTML}}</div>
+  <input type="button" @click="sayHi(123,345,$event)" value="传参点击"/>
+  <br/>
+  ----------------------------事件修饰符：可以连续调用，调用顺序不同，执行也有差别---------------------
+  <div>{{number}}</div>
+  <div v-on:click="numberAdd">
+    <!--点击按钮却执行了numberAd方法，称为事件冒泡-->
+    <input type="button" @click="numberAddStop" value="修饰符点击"/>
+    <!--@click.stop阻止事件冒泡-->
+    <input type="button" @click.stop="numberAddStop" value="阻止冒泡"/>
+  </div>
+  <br/>
+  <div>
+    <a href="http://www.baidu.com">百度</a>
+    <!--@click.prevent阻止跳转-->
+    <a href="http://www.baidu.com" @click.prevent="">阻止跳转</a>
+  </div>
+  <br/>
+  ----------------------------键盘修饰符：v-on:keyup---------------------
+  <form>
+    用户名：<input type="text" v-model="name" @keyup.enter="show" @keyup.delete="clear"/>
+    密 码：<input type="text" v-model="pwd" @keyup.enter="show" @keyup.delete="clear"/>
+    <input type="button" value="提交">
+    <div>
+      文本内容：{{text}}
+    </div>
+  </form>
+  <br/>
+  ----------------------------自定义修饰符：本身的按键修饰符不够用，可自定义---------------------
+  <div>
+    每一个按键对应一个编码，输入查看按键编码：
+    <input type="text" @keyup="keycode"/>
+    <div>
+      按键编码：{{keycodes}}
+    </div>
+    <input type="text" @keyup.empty="emptykeycode" @keyup.delete="clear"/>
+    <div>
+      输入空格则显示：{{emptykeycodes}}
+    </div>
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  Vue.config.keyCodes.empty = 32//自定义按键修饰符名称
+  vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      message: 'hello vue',
+      num: 0,
+      number: 333,
+      type: '',
+      innerHTML: '',
+      name: '',
+      pwd: '',
+      text: '',
+      keycodes: '',
+      emptykeycodes: ''
+    },
+    methods: {
+      //事件绑定:this是vue实例对象
+      add: function () {
+        this.num++;
+      },
+      //事件传参
+      sayHi: function (param, param2, event) {//传递事件对象，必须写在最后一个参数
+        this.num += param;
+        this.message += param2
+        this.type = event.target.tagName;//获取标签名称
+        this.innerHTML = event.target.innerHTML//获取内容
+      },
+      //事件修饰符
+      numberAdd() {
+        this.number += 111;
+      },
+      numberAddStop(event) {
+        //传统方式阻止事件冒泡
+        // event.stopPropagation();
+      },
+      show() {
+        this.text = this.name + '/' + this.pwd;
+      },
+      clear() {
+        this.name = ''
+        this.pwd = ''
+        this.emptykeycodes = ''
+      },
+      keycode(event) {
+        this.keycodes = event.keyCode;
+      },
+      emptykeycode() {
+        this.emptykeycodes = '输入了空格';
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
