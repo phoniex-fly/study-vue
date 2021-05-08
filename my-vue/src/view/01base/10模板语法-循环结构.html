@@ -9,20 +9,58 @@
 </head>
 <body>
 <div id='my-vue'>
-  <div v-if="score>=90">优秀</div>
-  <div v-else-if="score>=80&&score<90">良好</div>
-  <div v-else>一般</div>
+  <div>水果列表</div>
+  <ui>
+    <li v-for="item in fruits">{{item}}</li>
+  </ui>
+  --------------------------------------------
+  <div>水果列表</div>
+  <ui>
+    <li v-for="(item,index) in fruits">{{index+'----'+item}}</li>
+  </ui>
 
-  <div v-show="flag">{{score}}</div>
-  <input type="button" value="切换" @click="handle">
+  -------------------------------------------
+  <div>水果列表</div>
+  <ui>
+    <li v-for="item in myFruits">
+      <span>{{item.ename+'----'+item.cname}}</span>
+    </li>
+  </ui>
+
+  -------------------------------------------
+  <div>水果列表---:key="item.id"唯一标识一个数组节点</div>
+  <ui>
+    <li :key="item.id" v-for="item in myFruits">
+      <span>{{item.ename+'----'+item.cname}}</span>
+    </li>
+  </ui>
+
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script type="text/javascript">
   var vm = new Vue({
     el: '#my-vue',//元素的挂载位置
     data: {//模型数据，是一个对象
-      score: 99,
-      flag: true
+      fruits: [
+        'apple', 'banana', 'orange'
+      ],
+      myFruits: [
+        {
+          id: 1,
+          ename: 'apple',
+          cname: '苹果'
+        },
+        {
+          id: 2,
+          ename: 'banana',
+          cname: '香蕉'
+        },
+        {
+          id: 3,
+          ename: 'orange',
+          cname: '橘子'
+        }
+      ]
     },
     methods: {
       handle: function () {
