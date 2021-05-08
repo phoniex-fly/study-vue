@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-分支结构</title>
+  <style type="text/css">
+
+  </style>
+</head>
+<body>
+<div id='my-vue'>
+  <div v-if="score>=90">优秀</div>
+  <div v-else-if="score>=80&&score<90">良好</div>
+  <div v-else>一般</div>
+
+  <div v-show="flag">{{score}}</div>
+  <input type="button" value="切换" @click="handle">
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      score: 99,
+      flag: true
+    },
+    methods: {
+      handle: function () {
+        this.flag = !this.flag
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

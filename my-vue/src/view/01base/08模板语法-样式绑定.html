@@ -6,28 +6,42 @@
   <style type="text/css">
     .active {
       border: 1px solid red;
-      width: 100px;
+      width: 500px;
       height: 100px;
     }
 
     .active1 {
       border: 1px solid blue;
-      width: 50px;
-      height: 50px;
+      width: 500px;
+      height: 100px;
+      position: absolute;
+      top: 200px;
     }
 
-    .error {
+    .error1 {
       background-color: orange;
     }
+
   </style>
 </head>
 <body>
 <div id='my-vue'>
   <div class="active"/>
+
   <!--v-bind:class绑定样式，{active:isActive}为对象形式-->
-  <div v-bind:class="{active1:isActive,error:isError}"/>
-  <input type="button" value="切换" @click="changestyle">
-  <input type="button" value="error" @click="changeerror">
+  <div v-bind:class="{active1:isActive,error1:isError}"/>
+  --------------------------对象形式控制------------------------------
+  <input type="button" value="切换" @click="changeError">
+
+  <br/>
+
+  <div v-bind:class="[activeClass,errorClass]"/>
+  --------------------------数组形式控制------------------------------
+  <input type="button" value="切换" @click="changeArray">
+
+  <!--  <div v-bind:class="arrayClasses"/>-->
+  <!--  &#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;数组形式控制优化&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;-->
+  <!--  <input type="button" value="切换" @click="changeArray">-->
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script type="text/javascript">
@@ -35,14 +49,17 @@
     el: '#my-vue',//元素的挂载位置
     data: {//模型数据，是一个对象
       isActive: true,
-      isError: false
+      isError: false,
+      activeClass: 'active1',
+      errorClass: 'error1',
+      arrayClasses: ['active1', 'error1']
     },
     methods: {
-      changestyle: function () {
-        this.isActive = !this.isActive
-      },
-      changeerror: function () {
+      changeError: function () {
         this.isError = !this.isError
+      },
+      changeArray: function () {
+        this.errorClass = ''
       }
     }
   });
