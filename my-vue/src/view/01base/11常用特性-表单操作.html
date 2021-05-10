@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-表单操作</title>
+  <style type="text/css">
+
+  </style>
+</head>
+<body>
+<div id='my-vue'>
+  <!--表单输入域基本操作:5种类型-->
+  <!-- 表单域修饰符 number转为数值类型 trim去除前后空格 lazy将input事件转化为change事件-->
+  <form>
+    <div>
+      <span>姓名：</span>
+      <span>
+        <input type="text" v-model.trim="name"><!--trim去除前后空格-->
+      </span>
+    </div>
+    <div>
+      <span>年龄：</span>
+      <span>
+        <input type="text" v-model.number="age"><!--.number将值转为数值类型-->
+      </span>
+    </div>
+    <div>
+      <span>性别：</span>
+      <span>
+        <input type="radio" id="male" value="1" v-model="gender">
+        <label for="male">男</label>
+        <input type="radio" id="female" value="2" v-model="gender">
+        <label for="female">女</label>
+      </span>
+    </div>
+    <div>
+      <span>爱好：</span>
+      <input type="checkbox" id="ball" value="1" v-model="hobby">
+      <label for="ball">篮球</label>
+      <input type="checkbox" id="sing" value="2" v-model="hobby">
+      <label for="sing">唱歌</label>
+      <input type="checkbox" id="coding" value="3" v-model="hobby">
+      <label for="coding">写代码</label>
+    </div>
+    <div>
+      <span>职业单选：</span>
+      <select v-model="occupation">
+        <option value="0">请选择职业</option>
+        <option value="1">教师</option>
+        <option value="2">律师</option>
+        <option value="3">工程师</option>
+      </select>
+    </div>
+    <div>
+      <span>职业多选：</span>
+      <select v-model="multiOcc" multiple="true"><!--multiple="true"可简写为multiple-->
+        <option value="0">请选择职业</option>
+        <option value="1">教师</option>
+        <option value="2">律师</option>
+        <option value="3">工程师</option>
+      </select>
+    </div>
+    <div>
+      <span>个人简介：</span>
+      <textarea v-model.lazy="desc"></textarea><!--lazy将input事件转化为change事件,在失去焦点的时候触发 使用场景：注册时输入用户名，失去焦点后触发名称是否重复校验-->
+      <div>
+        {{desc}}
+      </div>
+    </div>
+    <!-- .prevent提交事件不再重载页面 -->
+    <input type="submit" value="提交" @click.prevent="handle">
+
+  </form>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      name: '张三',
+      gender: 1,
+      hobby: ['2', '3'],
+      occupation: 2,
+      multiOcc: [1, 2],
+      desc: '硕士毕业',
+      age: ''
+    },
+    methods: {
+      handle: function () {
+        // console.log('提交')
+        // console.log(this.age + 123)
+        console.log(this.name.length)
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

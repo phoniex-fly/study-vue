@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-侦听器</title>
+  <!--侦听器监听数据，数据发生变化就通知侦听器锁绑定的方法-->
+  <!--应用场景：数据变化时执行异步或开销较大的操作-->
+</head>
+<body>
+<div id='my-vue'>
+  <div>
+    姓：<input type="text" v-model="lastname">
+  </div>
+  <div>
+    名：<input type="text" v-model="firstname">
+  </div>
+  <div>
+    {{fullname}}
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      firstname: 'jim',
+      lastname: 'green',
+      fullname: 'jim green'
+    },
+    methods: {
+      handle: function () {
+      }
+    },
+    computed: {
+      reverse: function () {
+
+      }
+    },
+    watch: {
+      firstname: function (val) {/*firstname必须与监听的数据属性名称一致 val是这个属性的最新值*/
+        this.fullname = val + ' ' + this.lastname;
+      },
+      lastname: function (val) {/*lastname必须与监听的数据属性名称一致 val是这个属性的最新值*/
+        this.fullname = this.firstname + ' ' + val;
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

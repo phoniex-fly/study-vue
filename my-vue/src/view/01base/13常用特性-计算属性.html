@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>模板语法-计算属性</title>
+  <!--为什么会有计算属性：表达式的计算逻辑可能会比较复杂,将逻辑抽取出来，使得模板简单-->
+  <!--computed和methods区别：methods不基于缓存，计算属性是基于缓存的，可以提高性能-->
+  <!--计算属性是基于它们的依赖进行缓存的，依赖指计算属性中使用到的data中的属性，依赖的属性发生变化会触发compute重新计算-->
+  <!--应用场景：复杂的计算缓存起来，可以增加并发性能-->
+</head>
+<body>
+<div id='my-vue'>
+  <div>
+    {{msg}}
+  </div>
+  <div>
+    {{msg.split('').reverse().join('')}}
+  </div>
+  <div>
+    {{reverseMsg}}
+  </div>
+  <div>
+    {{reverseMsg}} <!--reverseMsg方法调用了两次，打开控制台发现‘computed’只输出了一次，说明第二次的显示使用到了缓存-->
+  </div>
+  <div>
+    {{reverseMsgM()}}
+  </div>
+  <div>
+    {{reverseMsgM()}} <!--reverseMsgM方法调用了两次，打开控制台发现‘methods’输出了两次，说明methods没有使用缓存-->
+  </div>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      msg: 'hello',//处理需求：将msg的字符串顺序反转
+      age: '12'
+    },
+    methods: {
+      reverseMsgM: function () {
+        console.log('methods')
+        return this.msg.split('').reverse().join('')//msg内容发生变化时，computed的函数也会随之变化
+      }
+    },
+    computed: {
+      reverseMsg: function () {
+        console.log('computed')
+        console.log(this.age) //依赖了age和msg,任何一个发生变化，触发重新计算
+        return this.msg.split('').reverse().join('')//msg内容发生变化时，computed的函数也会随之变化
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
