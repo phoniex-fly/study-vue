@@ -2,14 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>模板语法-侦听器</title>
+  <title>模板语法-侦听器应用</title>
   <!--侦听器监听数据，数据发生变化就通知侦听器锁绑定的方法-->
   <!--应用场景：数据变化时执行异步或开销较大的操作-->
 </head>
 <body>
 <div id='my-vue'>
   <div>
-    用户名：<input type="text" v-model="name">
+    用户名：<input type="text" v-model.lazy="name">
+    <span>{{tips}}</span>
   </div>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
@@ -17,18 +18,35 @@
   var vm = new Vue({
     el: '#my-vue',//元素的挂载位置
     data: {//模型数据，是一个对象
-      name: ''
+      name: '',
+      tips: ''
     },
     methods: {
       handle: function () {
+      },
+      checkName: function (name) {
+        var that = this
+        setTimeout(function () {
+          if (name === 'admin') {
+            that.tips = '用户名已注册'
+          } else {
+            that.tips = '名称校验通过'
+          }
+        }, 2000)
       }
+
     },
     computed: {
       reverse: function () {
 
       }
     },
-    watch: {}
+    watch: {
+      name: function (val) {//里边的方法异步执行，不是等checkName执行完成之后才给tips赋值
+        this.checkName(val);
+        this.tips = '名称校验中...'
+      }
+    }
   });
 </script>
 
