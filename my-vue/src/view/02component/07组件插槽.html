@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>插槽：父组件向子组件传递模板内容</title>
+  <!--标准、分治、重用、组合-->
+</head>
+<body>
+<div id='my-vue'>
+  <msg-box>有bug</msg-box>
+  <msg-box>有警告</msg-box>
+  <msg-box></msg-box>
+  --------------具名插槽：按照名称进行匹配----------------------
+  <!--按照名称进行匹配-->
+  <name>
+    <strong slot="header">标题</strong>
+    <p>内容1</p>
+    <p>内容2</p>
+    <p slot="footer">底部</p>
+  </name>
+  --------------具名插槽：按照名称进行匹配:往插槽中填充多个标签----------------------
+  <!--按照名称进行匹配:往插槽中填充多个标签-->
+  <name>
+    <template slot="header">
+      <strong>标题1</strong>
+      <strong>标题2</strong>
+    </template>
+    <p>内容1</p>
+    <p>内容2</p>
+    <template slot="footer">
+      <strong>底部1</strong>
+      <strong>底部2</strong>
+    </template>
+  </name>
+  ---------------插槽作用域:应用场景：在父组件中对子组件进行一些处理---------------------
+  <fruit-list :list="list">
+    <template slot-scope="slotProps"><!--通过slot-scope获取子组件的数据-->
+      <strong v-if="slotProps.info.id==2" style="color: #42b983">{{slotProps.info.name}}</strong>
+      <span v-else>{{slotProps.info.name}}</span>
+    </template>
+  </fruit-list>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  /**
+   * 子组件
+   * 全局组件注册
+   * props传递数据原则：单项数据流
+   */
+  Vue.component('msg-box', {
+    data: function () {
+      return {
+        num: 0,
+      }
+    },
+    template: `
+      <div>
+        <strong>ERROR:</strong>
+        <slot>默认内容</slot>
+      </div>`
+  })
+  /**
+   * 具名插槽
+   */
+  Vue.component('name', {
+    data: function () {
+      return {
+        num: 0,
+      }
+    },
+    template: `
+      <div>
+        <header>
+          <slot name="header"></slot>
+        </header>
+        <main>
+          <slot></slot>
+        </main>
+        <footer>
+          <slot name="footer"></slot>
+        </footer>
+      </div>`
+  })
+  /**
+   * 插槽作用域:应用场景：在父组件中对子组件进行一些处理
+   */
+  Vue.component('fruit-list', {
+    props: ['list'],
+    data: function () {
+      return {
+        num: 0,
+      }
+    },
+    template: `
+      <div>
+        <ul>
+          <li :key="item.id" v-for="item in list">
+            <slot :info="item">{{item.name}}</slot><!--/*通过:info="item"将数据传递给父组件*/-->
+          </li>
+        </ul>
+      </div>`
+  })
+  /**
+   * 父组件
+   * @type {Vue}
+   */
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      list: [{
+        id: 1,
+        name: 'apple'
+      },
+        {
+          id: 2,
+          name: 'banana'
+        }, {
+          id: 3,
+          name: 'orange'
+        }]
+    },
+    methods: {
+      handle: function () {
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

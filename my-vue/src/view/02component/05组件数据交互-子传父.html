@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>组件化开发思想</title>
+  <!--标准、分治、重用、组合-->
+</head>
+<body>
+<div id='my-vue'>
+  <div :style="{fontSize:fontSize+'px'}">{{pmsg}}</div>
+  <hello-world :title="title" :fruits="fruits" @large="handle" @addfruit="add($event)"></hello-world>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  /**
+   * 子组件
+   * 全局组件注册
+   * props传递数据原则：单项数据流
+   */
+  Vue.component('hello-world', {
+    props: ['fruits'],
+    data: function () {
+      return {
+        msg: '子组件中的内容',
+
+      }
+    },
+    template: `
+      <div>
+        <ul>
+          <li :key="index" v-for="(item,index) in fruits">{{item}}</li>
+        </ul>
+        <!--/*不推荐在子组件中直接操作父组件数据*/-->
+        <button @click="fruits.push('orange')">添加</button>
+        <!--/*推荐方式：子组件向父组件传递事件*/-->
+        <button @click="$emit('large')">放大</button>
+        <!--/*推荐方式：子组件向父组件传递事件带参数*/-->
+        <button @click="$emit('addfruit','lemon')">添加</button>
+      </div>`
+  })
+  /**
+   * 父组件
+   * @type {Vue}
+   */
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      pmsg: '父组件中的内容',
+      title: '动态绑定属性',/*字符串*/
+      age: 12,/*数值*/
+      young: true,/*布尔*/
+      fruits: [/*数组*/
+        'apple', 'banana'
+      ],
+      people: {/*对象*/
+        name: '李四',
+        gender: '男'
+      },
+      fontSize: 10
+    },
+    methods: {
+      handle: function () {
+        this.fontSize += 5
+      },
+      add: function (val) {
+        this.fruits.push(val)
+      }
+    }
+  });
+</script>
+
+</body>
+</html>

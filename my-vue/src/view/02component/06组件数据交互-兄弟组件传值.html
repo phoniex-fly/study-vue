@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>兄弟组件通过事件中心传值</title>
+  <!--标准、分治、重用、组合-->
+</head>
+<body>
+<div id='my-vue'>
+  <div>
+    <button @click="handle">销毁事件</button>
+  </div>
+  <tom></tom>
+  <jerry></jerry>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script type="text/javascript">
+  /**
+   * 提供事件中心
+   */
+  var hub = new Vue();
+  /**
+   * 子组件
+   * 全局组件注册
+   * props传递数据原则：单项数据流
+   */
+  Vue.component('tom', {
+    data: function () {
+      return {
+        num: 0,
+
+      }
+    },
+    template: `
+      <div>
+        <div>tom:{{num}}</div>
+        <button @click="tomHandle">让jerry加1</button>
+      </div>`,
+    methods: {
+      tomHandle: function () {
+        hub.$emit('jerry-event', 1)/*触发兄弟事件*/
+      }
+    },
+    mounted: function () {
+      hub.$on('tom-event', (val) => {/*在事件中心注册事件监听*/
+        this.num += val
+      })
+    }
+  })
+  Vue.component('jerry', {
+    data: function () {
+      return {
+        num: 0,
+
+      }
+    },
+    template: `
+      <div>
+        <div>jerry:{{num}}</div>
+        <button @click="jerryHandle">让tom加2</button>
+      </div>`,
+    methods: {
+      jerryHandle: function () {
+        hub.$emit('tom-event', 2)
+      }
+    },
+    mounted: function () {
+      hub.$on('jerry-event', (val) => {
+        this.num += val
+      })
+    }
+  })
+  /**
+   * 父组件
+   * @type {Vue}
+   */
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+      fontSize: 10
+    },
+    methods: {
+      handle: function () {
+        hub.$off('tom-event')
+        hub.$off('jerry-event')
+      }
+    }
+  });
+</script>
+
+</body>
+</html>
