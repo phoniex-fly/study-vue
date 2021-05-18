@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue-router动态路由匹配</title>
+  <!--相同的内容保留，不同的内容作为参数传入-->
+  <!--使用props将路由和组件解耦-->
+</head>
+<body>
+<div id='my-vue'>
+  <!--路由使用-->
+  <router-link to="/user">user</router-link><!--router-link渲染为a标签,to渲染为href属性,/user的值渲染为#/user-->
+  <router-link to="/register">register</router-link>
+
+  <!--路由占位-->
+  <router-view></router-view>
+
+</div>
+<script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+<script src="https://unpkg.com/vue-router/dist/vue-router.js"></script>
+<script type="text/javascript">
+  const user = {
+    template: `<h1>user组件</h1>`
+  }
+
+  const register = {
+    template: `<div>
+         <h1>register组件</h1>
+         <hr/>
+         <router-link to="/register/tab1">tab1</router-link>
+         <router-link to="/register/tab2">tab2</router-link>
+         <router-link to="/register/tab3">tab3</router-link>
+         <router-link to="/register/tab4">tab4</router-link>
+         <router-view></router-view>
+    </div>`
+  }
+
+  const tab = {
+    props: ['id', 'name', 'age'],
+    template: `
+      <div>
+        <h3>{{id}}</h3>
+        <h3>{{name + "---" + age}}</h3><!--/*传递对象类型参数时，id就无法再访问到,传递函数类型时，id还可以访问到*/-->
+      </div>`
+  }
+
+
+  //声明路由
+  var router = new VueRouter({
+    routes: [
+      {
+        path: "/",
+        redirect: "/user"
+      }, {
+        path: "/user",
+        component: user
+      }, {
+        path: "/register",
+        component: register,
+        children: [
+          // {path: "/register/:id", component: tab, props: true},/*传递布尔：动态参数*/
+          // {path: "/register/:id", component: tab, props: {name: "lisi", age: "12"}}/*传递对象类型静态参数*/
+          {
+            path: "/register/:id", component: tab, props: route => ({
+              name: "lisi", age: "12", id: route.params.id
+            })
+          }/*传递函数类型：同时传递动态参数和静态参数*/
+        ]
+      }]
+  })
+
+  var vm = new Vue({
+    el: '#my-vue',//元素的挂载位置
+    data: {//模型数据，是一个对象
+
+    },
+    //路由对象需挂载在vue对象上
+    router: router/*可简写为router*/
+  });
+</script>
+
+</body>
+</html>
