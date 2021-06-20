@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Login from '../components/Login'
 import Home from '../components/Home'
 import Welcome from '../components/Welcome'
+import customerView from '../components/customer/customer'
 
 Vue.use(VueRouter)
 
@@ -23,6 +24,10 @@ const routes = [
       {
         path: '/welcome',
         component: Welcome
+      },
+      {
+        path: '/customerView',
+        component: customerView
       }
     ]
   }

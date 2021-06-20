@@ -3,7 +3,7 @@
     <el-header>
       <div>
         <img src="../assets/title.png">
-        <span>用来练手的管理系统</span>
+        <span>管理系统</span>
       </div>
       <el-button type="text" @click="logout" size="medium">退出</el-button>
     </el-header>
@@ -79,7 +79,7 @@ export default {
     secLevelMenu (first) {
       var secMenuList = this.menuList
       return secMenuList.filter(secMenu => {
-        return secMenu.parentId === first.menuId && secMenu.menuType !== 'F'
+        return secMenu.parentId === first.menuId && secMenu.menuType !== 'F' && secMenu.status === '0'
       })
     },
     toggle () {
